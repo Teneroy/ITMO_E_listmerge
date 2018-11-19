@@ -14,17 +14,11 @@ int main()
     elem y("Leonid", "Rudneva 22");
     elem z("Igor", "Kultura 11");
     obj.insert(0, x);
-    obj.printList();
     obj.insert(1, y);
-    obj.printList();
     obj.insert(2, z);
-    obj.printList();
     obj.insert(3, y);
-    obj.printList();
     obj.insert(4, z);
-    obj.printList();
     obj.insert(0, y);
-    obj.printList();
     obj.insert(4, x);
     obj.printList();
 
@@ -49,8 +43,6 @@ int main()
         }
         p = obj.next(p);
     }
-
-    obj.printList();
 
     /*SINGLE LINKED LIST*/
     slinkedlist::List ob;
@@ -87,7 +79,6 @@ int main()
         i = ob.next(i);
     }
 
-    ob.printList();
 
     /*DOUBLE LINKED LIST*/
     dlinkedlist::List obd;
@@ -102,7 +93,6 @@ int main()
     obd.insert(pos_d, y);
     pos_d = obd.next(pos_d);
     obd.insert(pos_d, z);
-    obd.printList();
 
     dlinkedlist::t_position qd = nullptr; //добавить конструтор по умолчанию?
     dlinkedlist::t_position pd = obd.firstL();
@@ -124,8 +114,6 @@ int main()
         }
         pd = obd.next(pd);
     }
-
-    ob.printList();
 
     /*CURSOR LIST*/
     cursorlist::List obc;
@@ -157,7 +145,21 @@ int main()
         pc = obc.next(pc);
     }
 
+    std::cout << std::endl;
+    std::cout << "-------------------------------------------------------RESULT:-------------------------------------------------------" << std::endl;
+    std::cout << "______________________________________________________ARRAY REALIZATION______________________________________________" << std::endl;
+    obj.printList();
+    std::cout << "_____________________________________________________________________________________________________________________" << std::endl;
+    std::cout << "_______________________________________________SINGLE LINKED LIST REALIZATION________________________________________" << std::endl;
+    ob.printList();
+    std::cout << "_____________________________________________________________________________________________________________________" << std::endl;
+    std::cout << "_______________________________________________DOUBLE LINKED LIST REALIZATION________________________________________" << std::endl;
+    obd.printList();
+    std::cout << "_____________________________________________________________________________________________________________________" << std::endl;
+    std::cout << "____________________________________________________CURSORS REALIZATION______________________________________________" << std::endl;
     obc.printList();
+    std::cout << "_____________________________________________________________________________________________________________________" << std::endl;
+    std::cout << "---------------------------------------------------------------------------------------------------------------------" << std::endl;
 
 return 0;
 }

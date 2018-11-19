@@ -4,11 +4,13 @@
 
 #include "List.h"
 
+arrlist::node fake_a;
+
 arrlist::List::List()
 {
     for(int i = 0; i < SIZE; i++)
     {
-        _arr[i] = elem();
+        _arr[i] = node();
     }
     _endl = 0;
 }
@@ -49,7 +51,6 @@ arrlist::t_position arrlist::List::next(t_position p)
         return p + 1;
     } else
     {
-        std::cout << "position does not exist" << std::endl;
         return _endl;
     }
 }
@@ -61,8 +62,7 @@ arrlist::t_position arrlist::List::prev(t_position p)
         return p - 1;
     } else
     {
-        std::cout << "position does not exist" << std::endl;
-        return -1;
+        return fake_a.next;
     }
 }
 
@@ -70,11 +70,10 @@ elem arrlist::List::retrieve(t_position p)
 {
     if(pos_exist(p))
     {
-        return _arr[p];
+        return _arr[p].data;
     } else
     {
-        std::cout << "position does not exist" << std::endl;
-        return elem("error", "error");
+        return fake_a.data;
     }
 }
 
@@ -86,8 +85,7 @@ arrlist::t_position arrlist::List::locate(elem x)
         return pos;
     } else
     {
-        std::cout << "element " << x.adress << " does not exist" << std::endl;
-        return pos;
+        return fake_a.next;
     }
 }
 
@@ -104,7 +102,7 @@ arrlist::t_position arrlist::List::deleteEl(t_position p)
 
 void arrlist::List::add_to_tail(elem x)
 {
-    _arr[_endl] = x;
+    _arr[_endl].data = x;
     _endl++;
 }
 
@@ -115,7 +113,7 @@ arrlist::t_position arrlist::List::delete_with_change(t_position p)
         _arr[i] = _arr[i + 1];
         if(i == _endl)
         {
-            _arr[i] = elem("", "");
+            _arr[i].data = elem("", "");
         }
     }
     _endl--;
@@ -128,7 +126,7 @@ void arrlist::List::add_with_change(elem x, int p)
     {
         _arr[i + 1] = _arr[i];
     }
-    _arr[p] = x;
+    _arr[p].data = x;
     _endl++;
 }
 
@@ -147,25 +145,26 @@ arrlist::t_position arrlist::List::search_same_pos(elem x)
 {
     for(int i = 0; i < _endl; i++)
     {
-        if(_arr[i].name == x.name && _arr[i].adress == x.adress)
+        if(_arr[i].data.name == x.name && _arr[i].data.adress == x.adress)
         {
             return i;
         }
     }
-    return -1;
+    return fake_a.next;
 }
 
 void arrlist::List::print_arr()
 {
-    std::cout << std::setw(25) << "ARRAY:" << std::endl;
-    std::cout << std::setw(25) << "<data>";
-    std::cout << std::setw(25) << "<index>" << std::endl;
-    for (int i = 0; i < SIZE; ++i)
+    std::cout << std::setw(25) << "<index>";
+    std::cout << std::setw(25) << "<data>" << std::endl;
+    for (int i = 0; i < _endl; ++i)
     {
-        std::cout << std::setw(25) << _arr[i].adress;
-        std::cout << std::setw(25) << i << std::endl;
+        std::cout << std::setw(25) << i;
+        std::cout << std::setw(25) << _arr[i].data.name << " " << _arr[i].data.adress << std::endl;
     }
 }
+
+slinkedlist::node fake;
 
 slinkedlist::List::List()
 {
@@ -246,13 +245,7 @@ slinkedlist::t_position slinkedlist::List::locate(elem x)
 
 elem slinkedlist::List::retrieve(t_position position)
 {
-    if(position_exist(_head, position))
-    {
-        return position -> x;
-    } else
-    {
-        fake.x;
-    }
+    return search_same_el(_head, position);
 }
 
 slinkedlist::t_position slinkedlist::List::deleteEl(t_position position)
@@ -264,7 +257,6 @@ slinkedlist::t_position slinkedlist::List::deleteEl(t_position position)
         return next;
     } else
     {
-        std::cout << "position does not exist" << std::endl;
         return fake.next;
     }
 }
@@ -272,12 +264,10 @@ slinkedlist::t_position slinkedlist::List::deleteEl(t_position position)
 void slinkedlist::List::printList()
 {
     node * temp = _head;
-    std::cout << std::setw(25) << "List:" << std::endl;
-    std::cout << std::setw(25) << "<data>";
-    std::cout << std::setw(25) << "<index>" << std::endl;
+    std::cout << std::setw(25) << "<data>" << std::endl;
     while(temp != nullptr)
     {
-        std::cout << std::setw(25) << temp -> x.name << " " << std::setw(25) << temp -> x.adress << std::endl;
+        std::cout << std::setw(25) << temp -> x.name << " "  << temp -> x.adress << std::endl;
         temp = temp -> next;
     }
 }
@@ -336,7 +326,7 @@ elem slinkedlist::List::search_same_el(node * list, t_position pos)
         }
         temp = temp -> next;
     }
-    return elem("error", "error");
+    return fake.x;
 }
 
 slinkedlist::t_position slinkedlist::List::search_same_pos(node * list, elem x)
@@ -405,6 +395,8 @@ slinkedlist::node * slinkedlist::List::add_to_pos(node * list, t_position pos, e
     return list;
 }
 
+dlinkedlist::node fake_d;
+
 dlinkedlist::List::List()
 {
     _list.head = _list.tail = nullptr;
@@ -454,7 +446,7 @@ dlinkedlist::t_position dlinkedlist::List::next(t_position position)
     }
     if(!position_exist(position, _list.head))
     {
-        return nullptr;
+        return fake_d.next;
     }
     return position -> next;
 }
@@ -467,7 +459,7 @@ dlinkedlist::t_position dlinkedlist::List::prev(t_position position)
     }
     if(!position_exist(position, _list.head))
     {
-        return nullptr;
+        return fake_d.next;
     }
     return position -> prev;
 }
@@ -492,19 +484,17 @@ dlinkedlist::t_position dlinkedlist::List::deleteEl(t_position position)
     } else
     {
         std::cout << "position does not exist" << std::endl;
-        return nullptr;
+        return fake_d.next;
     }
 }
 
 void dlinkedlist::List::printList()
 {
     node * temp = _list.head;
-    std::cout << std::setw(25) << "List:" << std::endl;
-    std::cout << std::setw(25) << "<data>";
-    std::cout << std::setw(25) << "<index>" << std::endl;
+    std::cout << std::setw(25) << "<data>" << std::endl;
     while(temp != nullptr)
     {
-        std::cout << std::setw(25) << temp -> x.name << " " << std::setw(25) << temp -> x.adress << std::endl;
+        std::cout << std::setw(25) << temp -> x.name << " " << temp -> x.adress << std::endl;
         temp = temp -> next;
     }
 }
@@ -538,7 +528,7 @@ elem dlinkedlist::List::search_same_el(node * list, t_position pos)
         }
         temp = temp -> next;
     }
-    return elem("error", "error");
+    return fake_d.x;
 }
 
 dlinkedlist::t_position dlinkedlist::List::search_same_pos(node * list, elem x)
@@ -552,7 +542,7 @@ dlinkedlist::t_position dlinkedlist::List::search_same_pos(node * list, elem x)
         }
         temp = temp -> next;
     }
-    return nullptr;
+    return fake_d.next;
 }
 
 dlinkedlist::t_HT dlinkedlist::List::deleteList(t_HT list)
@@ -603,8 +593,10 @@ dlinkedlist::node * dlinkedlist::List::add_to_pos(node * list, t_position pos, e
     return list;
 }
 
+cursorlist::node fake_c;
+
 int cursorlist::List::_space = -1;
-cursorlist::cur cursorlist::List::_arr[SIZE];
+cursorlist::node cursorlist::List::_arr[SIZE];
 
 void cursorlist::List::InitArr()
 {
@@ -625,7 +617,6 @@ cursorlist::List::List()
     if(List::_space == -1)
     {
         List::InitArr();
-        print_arr();
     }
 }
 
@@ -690,8 +681,7 @@ cursorlist::t_position cursorlist::List::deleteEl(t_position p)
         return delete_with_change(p);
     } else
     {
-        std::cout << "position " << p << "does not exist" << std::endl;
-        return -1;
+        return fake_c.next;
     }
 }
 
@@ -721,7 +711,7 @@ cursorlist::t_position cursorlist::List::delete_with_change(t_position p)
 
 elem cursorlist::List::search_same_el(t_position p)
 {
-    cur iter = List::_arr[_lpos];
+    node iter = List::_arr[_lpos];
     int i = _lpos;
     while(i != -1)
     {
@@ -732,12 +722,12 @@ elem cursorlist::List::search_same_el(t_position p)
         i = iter.next;
         iter = List::_arr[iter.next];
     }
-    return elem("error", "error");
+    return fake_c.data;
 }
 
 cursorlist::t_position cursorlist::List::search_same_pos(elem x)
 {
-    cur iter = List::_arr[_lpos];
+    node iter = List::_arr[_lpos];
     int i = _lpos;
     while(i != -1)
     {
@@ -748,14 +738,14 @@ cursorlist::t_position cursorlist::List::search_same_pos(elem x)
         i = iter.next;
         iter = List::_arr[iter.next];
     }
-    return -1;
+    return fake_c.next;
 }
 
 void cursorlist::List::add_with_change(elem x, t_position p)
 {
     if(List::_space != -1)
     {
-        cur temp(x,List::_space);
+        node temp(x,List::_space);
         int next_space = List::_arr[List::_space].next;
         List::_arr[List::_space] = List::_arr[p];
         List::_arr[p] = temp;
@@ -768,7 +758,7 @@ void cursorlist::List::add_with_change(elem x, t_position p)
 
 cursorlist::t_position cursorlist::List::get_prev_el(t_position p)
 {
-    cur iter = List::_arr[_lpos];
+    node iter = List::_arr[_lpos];
     int i = _lpos;
     while(i != -1)
     {
@@ -779,12 +769,12 @@ cursorlist::t_position cursorlist::List::get_prev_el(t_position p)
         i = iter.next;
         iter = List::_arr[iter.next];
     }
-    return -1;
+    return fake_c.next;
 }
 
 cursorlist::t_position cursorlist::List::get_next_el(t_position p)
 {
-    cur iter = List::_arr[_lpos];
+    node iter = List::_arr[_lpos];
     int i = _lpos;
     while(i != -1)
     {
@@ -795,13 +785,13 @@ cursorlist::t_position cursorlist::List::get_next_el(t_position p)
         i = iter.next;
         iter = List::_arr[iter.next];
     }
-    return -1;
+    return fake_c.next;
 }
 
 void cursorlist::List::add_after(elem x)
 {
     int next_space = List::_arr[List::_space].next;
-    cur temp(x, -1);
+    node temp(x, -1);
     List::_arr[List::_space] = temp;
     if(_lpos == ENDL)
     {
@@ -812,7 +802,7 @@ void cursorlist::List::add_after(elem x)
 
 bool cursorlist::List::pos_exist(t_position p)
 {
-    cur iter = List::_arr[_lpos];
+    node iter = List::_arr[_lpos];
     int i = _lpos;
     while(i != -1)
     {
@@ -828,7 +818,6 @@ bool cursorlist::List::pos_exist(t_position p)
 
 void cursorlist::List::print_arr()
 {
-    std::cout << std::setw(25) << "CURSORS:" << std::endl;
     std::cout << std::setw(25) << "<index>";
     std::cout << std::setw(25) << "<data>";
     std::cout << std::setw(25) << "<next>" << std::endl;

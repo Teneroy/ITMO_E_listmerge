@@ -24,11 +24,18 @@ namespace arrlist
 
     typedef int t_position;
 
+    struct node
+    {
+        elem data;
+        int next;
+        node() {next = -1;};
+        node(elem d, int n):data(d),next(n) {};
+    };
+
     class List
     {
     public:
         List();
-    //    ~List();
         void insert(t_position p, elem x);
         t_position endL();
         t_position firstL();
@@ -41,7 +48,7 @@ namespace arrlist
         void printList();
 
     private:
-        elem _arr[SIZE];
+        node _arr[SIZE];
         int _endl;
         void print_arr();
         bool pos_exist(t_position p);
@@ -64,8 +71,6 @@ namespace slinkedlist {
             next = this;
         }
     };
-
-    node fake;
 
     typedef node * t_position;
 
@@ -106,6 +111,11 @@ namespace dlinkedlist
         elem x;
         node * next;
         node * prev;
+        node()
+        {
+            next = this;
+            prev = this;
+        }
     };
 
     struct t_HT
@@ -146,12 +156,12 @@ namespace dlinkedlist
 namespace cursorlist
 {
 
-    struct cur
+    struct node
     {
         elem data;
         int next;
-        cur() {next = 0;};
-        cur(elem d, int n):data(d),next(n) {};
+        node() {next = -1;};
+        node(elem d, int n):data(d),next(n) {};
     };
 
     typedef int t_position;
@@ -160,7 +170,6 @@ namespace cursorlist
     {
     public:
         List();
-//    ~List();
         void insert(t_position p, elem x);
         t_position endL();
         t_position firstL();
@@ -173,7 +182,7 @@ namespace cursorlist
         void printList();
 
     private:
-        static cur _arr[SIZE];
+        static node _arr[SIZE];
         static t_position _space;
         static void InitArr();
         int _lpos;
