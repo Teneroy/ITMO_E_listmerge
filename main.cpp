@@ -20,7 +20,10 @@ int main()
     obj.insert(4, z);
     obj.insert(0, y);
     obj.insert(4, x);
+    std::cout << "-------------------------------------------------------DATA:-------------------------------------------------------" << std::endl;
+    std::cout << "______________________________________________________ARRAY REALIZATION______________________________________________" << std::endl;
     obj.printList();
+    std::cout << "_____________________________________________________________________________________________________________________" << std::endl;
 
     elem temp, temp2;
     arrlist::t_position q = 0;
@@ -57,7 +60,9 @@ int main()
     ob.insert(pos, y);
     pos = ob.next(pos);
     ob.insert(pos, z);
+    std::cout << "_______________________________________________SINGLE LINKED LIST REALIZATION________________________________________" << std::endl;
     ob.printList();
+    std::cout << "_____________________________________________________________________________________________________________________" << std::endl;
     slinkedlist::t_position j = nullptr;
     slinkedlist::t_position i = ob.firstL();
     while (i != ob.endL())
@@ -93,6 +98,10 @@ int main()
     obd.insert(pos_d, y);
     pos_d = obd.next(pos_d);
     obd.insert(pos_d, z);
+    std::cout << "_______________________________________________DOUBLE LINKED LIST REALIZATION________________________________________" << std::endl;
+    obd.printList();
+    std::cout << "_____________________________________________________________________________________________________________________" << std::endl;
+
 
     dlinkedlist::t_position qd = nullptr; //добавить конструтор по умолчанию?
     dlinkedlist::t_position pd = obd.firstL();
@@ -122,7 +131,11 @@ int main()
     obc.insert(0, z);
     obc.insert(-1, z);
     obc.insert(-1, z);
+    std::cout << "____________________________________________________CURSORS REALIZATION______________________________________________" << std::endl;
     obc.printList();
+    std::cout << "_____________________________________________________________________________________________________________________" << std::endl;
+    std::cout << "---------------------------------------------------------------------------------------------------------------------" << std::endl;
+
 
     cursorlist::t_position qc = 0;
     cursorlist::t_position pc = obj.firstL();
