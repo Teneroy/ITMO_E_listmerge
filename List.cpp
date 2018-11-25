@@ -4,156 +4,19 @@
 
 #include "List.h"
 
-arrlist::node fake_a;
+arrlist::node fake_a; //Фэйковый элемент для массива, возвращается при ошибке(fake.next, если нужно вернуть позицию, fake.data, если объект)
 
 arrlist::List::List()
 {
     for(int i = 0; i < SIZE; i++)
     {
-        _arr[i] = node();
+        _arr[i] = node(); //Инициализируем массив, пустыми узлами(в data пустые строки, в next -1)
     }
-    _endl = 0;
+    _endl = 0; //Конец списка, обозначает, что список пустой
 }
 
+//Вывести список
 void arrlist::List::printList()
-{
-    print_arr();
-}
-
-void arrlist::List::insert(t_position p, elem x)
-{
-    if(p == _endl)
-    {
-        add_to_tail(x);
-    } else if(pos_exist(p))
-    {
-        add_with_change(x, p);
-    } else
-    {
-        std::cout << "position does not exist" << std::endl;
-    }
-}
-
-arrlist::t_position arrlist::List::endL()
-{
-    return _endl;
-}
-
-arrlist::t_position arrlist::List::firstL()
-{
-    return 0;
-}
-
-arrlist::t_position arrlist::List::next(t_position p)
-{
-    if(pos_exist(p))
-    {
-        return p + 1;
-    } else
-    {
-        return _endl;
-    }
-}
-
-arrlist::t_position arrlist::List::prev(t_position p)
-{
-    if(pos_exist(p))
-    {
-        return p - 1;
-    } else
-    {
-        return fake_a.next;
-    }
-}
-
-elem arrlist::List::retrieve(t_position p)
-{
-    if(pos_exist(p))
-    {
-        return _arr[p].data;
-    } else
-    {
-        return fake_a.data;
-    }
-}
-
-arrlist::t_position arrlist::List::locate(elem x)
-{
-    int pos = search_same_pos(x);
-    if(pos != -1)
-    {
-        return pos;
-    } else
-    {
-        return fake_a.next;
-    }
-}
-
-arrlist::t_position arrlist::List::deleteEl(t_position p)
-{
-    if(pos_exist(p))
-    {
-        return delete_with_change(p);
-    } else
-    {
-        return p + 1;
-    }
-}
-
-void arrlist::List::add_to_tail(elem x)
-{
-    _arr[_endl].data = x;
-    _endl++;
-}
-
-arrlist::t_position arrlist::List::delete_with_change(t_position p)
-{
-    for (int i = p; i < _endl; ++i)
-    {
-        _arr[i] = _arr[i + 1];
-        if(i == _endl)
-        {
-            _arr[i].data = elem("", "");
-        }
-    }
-    _endl--;
-    return p + 1;
-}
-
-void arrlist::List::add_with_change(elem x, int p)
-{
-    for(int i = _endl - 1; i >= p; --i)
-    {
-        _arr[i + 1] = _arr[i];
-    }
-    _arr[p].data = x;
-    _endl++;
-}
-
-bool arrlist::List::pos_exist(t_position p)
-{
-    if(p <= _endl && p >= 0)
-    {
-        return true;
-    } else
-    {
-        return false;
-    }
-}
-
-arrlist::t_position arrlist::List::search_same_pos(elem x)
-{
-    for(int i = 0; i < _endl; i++)
-    {
-        if(_arr[i].data.name == x.name && _arr[i].data.adress == x.adress)
-        {
-            return i;
-        }
-    }
-    return fake_a.next;
-}
-
-void arrlist::List::print_arr()
 {
     std::cout << std::setw(25) << "<index>";
     std::cout << std::setw(25) << "<data>" << std::endl;
@@ -163,6 +26,156 @@ void arrlist::List::print_arr()
         std::cout << std::setw(25) << _arr[i].data.name << " " << _arr[i].data.adress << std::endl;
     }
 }
+
+//Вставка в список
+void arrlist::List::insert(t_position p, elem x)
+{
+    if(p == _endl) // Если позиция равна концу списка, то добавляем в список, после последнего элемента
+    {
+        add_to_tail(x);
+    } else if(pos_exist(p)) //Если позиция существует
+    {
+        add_with_change(x, p); //Добавляем в позицию, смещая остальные элементы списка, на соседнюю позицию
+    } else
+    {
+        std::cout << "position does not exist" << std::endl; //Выводим предупреждение, что пользователь вставляет элемент в несуществующую позицию
+    }
+}
+
+//Вернуть последний элемент
+arrlist::t_position arrlist::List::endL()
+{
+    return _endl; //Возвращаем позицию конца списка
+}
+
+//Вернуть первый элемент
+arrlist::t_position arrlist::List::firstL()
+{
+    return 0; //Возвращаем позицию первого элемента, он всегда на нулевой позиции
+}
+
+//Вернуть следующий элемент, после позиции p
+arrlist::t_position arrlist::List::next(t_position p)
+{
+    if(pos_exist(p)) //Если позиция существует
+    {
+        return p + 1; //Вернуть следующую позицию, после текущей
+    } else
+    {
+        return _endl; //Вернуть конец списка, если ее не существует
+        //Это сделано, чтобы, если мы дойдем до конца списка, мы могли спокойно выйти из цикла в main
+    }
+}
+
+//Вернуть предыдущий элемент, до позиции p
+arrlist::t_position arrlist::List::prev(t_position p)
+{
+    if(pos_exist(p)) //Если позиция существует
+    {
+        return p - 1; //Возвращаем предыдущую позицию, до текущей
+    } else
+    {
+        return fake_a.next; //Возвращаем объект ошибки
+    }
+}
+
+//Вернуть элемент по позиции в списке
+elem arrlist::List::retrieve(t_position p)
+{
+    if(pos_exist(p)) //Если позиция существует
+    {
+        return _arr[p].data; //Возвращаем elem по позиции
+    } else
+    {
+        return fake_a.data; //Возвращаем данные с фэйкового элемента
+    }
+}
+
+//Вернуть позицию элемента x в списке
+arrlist::t_position arrlist::List::locate(elem x)
+{
+    int pos = search_same_pos(x); //Ищем нужную позицию по элементу
+    if(pos != -1) //Если позиция существует
+    {
+        return pos; //Возвращаем позицию
+    } else
+    {
+        return fake_a.next; //Возвращаем фэйковый элемент
+    }
+}
+
+//Удалить элемент списка по позиции
+arrlist::t_position arrlist::List::deleteEl(t_position p)
+{
+    if(pos_exist(p)) //Если позиция существует
+    {
+        return delete_with_change(p); //Удаляем элемент и возвращаем позицию, после текущего
+    } else
+    {
+        return fake_a.next; //Возвращаем позицию фэйкового  элемента
+    }
+}
+
+//Добавить в конец списка элемент x
+void arrlist::List::add_to_tail(elem x)
+{
+    _arr[_endl].data = x; //Записываем данные в хвост
+    _endl++; //Увеличиваем конец списка на 1
+}
+
+//Удалить элемент в позиции p со смещением
+arrlist::t_position arrlist::List::delete_with_change(t_position p)
+{
+    for (int i = p; i < _endl; ++i)
+    {
+        _arr[i] = _arr[i + 1]; //Записываем в текущий элемент, следующий за им, таким образом смещая все элементы влево
+        if(i == _endl) //Если мы дошли до последнего элемента списка
+        {
+            _arr[i].data = elem("", ""); //Заполняем последний элемент пустыми данными
+        }
+    }
+    _endl--; //Уменьшаем конец списка на 1
+    return p + 1; //Возвращаем позицию, после текущей
+}
+
+//Добавить элемент x в позицию p со смещением
+void arrlist::List::add_with_change(elem x, int p)
+{
+    for(int i = _endl - 1; i >= p; --i) //Гоним с конца списка
+    {
+        _arr[i + 1] = _arr[i]; //Заполняем последующий элемент текущим, для смешения
+    }
+    _arr[p].data = x; //Вставляем эдемент в позицию
+    _endl++; //Увеличиваем конец списка на 1
+}
+
+//Существует ли позиция в списке
+bool arrlist::List::pos_exist(t_position p)
+{
+    if(p <= _endl && p >= 0) //Если p входит в промежуток [0;_endl], то такая позиция существует
+    {
+        return true;
+    } else
+    {
+        return false;
+    }
+}
+
+//Поиск одинакового элемента в списке
+arrlist::t_position arrlist::List::search_same_pos(elem x)
+{
+    for(int i = 0; i < _endl; i++)
+    {
+        if(_arr[i].data.name == x.name && _arr[i].data.adress == x.adress) //Если данные обоих элементов равны
+        {
+            return i; //Возвращаем текущую позицию
+        }
+    }
+    return fake_a.next; //Если во всем списке, ничего не нашли, возвращаем позицию фэйкового элемента
+}
+
+
+/*SINGLE LINKED LIST*/
 
 slinkedlist::node fake;
 

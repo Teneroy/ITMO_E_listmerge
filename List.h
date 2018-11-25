@@ -51,7 +51,6 @@ namespace arrlist
     private:
         node _arr[SIZE]; //Массив структур node(для фейкового элемента)
         int _endl; //Последний элемент списка
-        void print_arr();
         bool pos_exist(t_position p); //Существует ли позиция в списке
         void add_with_change(elem x, int p); //Добавить элемент x в позицию p со смещением
         t_position search_same_pos(elem x); //Поиск одинакового элемента в списке
