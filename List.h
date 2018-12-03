@@ -98,7 +98,7 @@ namespace slinkedlist {
         elem search_same_el(node * list, t_position pos); //Поиск одинаковой позиции в списке
         node * delete_with_change(node * list, t_position pos);//Удалить элемент в позиции p со смещением
         node * get_prev_el(node * list, t_position pos); //Получить предыдущий элемент
-        node * get_last_el(node * list); //Получить следующий элемент
+        node * get_last_el(node * list); //Получить последний элемент
     };
 
 }
@@ -132,7 +132,7 @@ namespace dlinkedlist
         ~List();
         void insert(t_position p, elem x); //Вставка в список
         void printList();//Вывести список
-        t_position endL();//Вернуть последний элемент
+        t_position endL();//Вернуть конец списка
         t_position firstL();//Вернуть первый элемент
         t_position next(t_position position);//Вернуть следующий элемент, после позиции p
         t_position prev(t_position position);//Вернуть предыдущий элемент, до позиции p
@@ -186,7 +186,6 @@ namespace cursorlist
         static t_position _space; //Позиция первого пустого элемента
         static void InitArr(); //Инициализация массива
         t_position _lpos; //Позиция первого элемента текущего списка
-        void print_arr();
         void add_after(elem x); //Добавить элемент в конец списка
         bool pos_exist(t_position p); //Существует ли позиция
         t_position get_prev_el(t_position p); //Получить позицию предыдущего элемента, до p
