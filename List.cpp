@@ -70,7 +70,7 @@ arrlist::t_position arrlist::List::next(t_position p)
 //Вернуть предыдущий элемент, до позиции p
 arrlist::t_position arrlist::List::prev(t_position p)
 {
-    if(pos_exist(p)) //Если позиция существует
+    if(pos_exist(p) && p != 0) //Если позиция существует
     {
         return p - 1; //Возвращаем предыдущую позицию, до текущей
     } else
@@ -102,6 +102,17 @@ arrlist::t_position arrlist::List::locate(elem x)
     {
         return fake_a.next; //Возвращаем фэйковый элемент
     }
+}
+
+//Заполнить массив пустыми значениями
+void arrlist::List::makenull()
+{
+    for (int i = 0; i < _endl; i++)
+    {
+        strcpy(_arr[i].data.adress, "");
+        strcpy(_arr[i].data.name, "");
+    }
+    _endl = 0;
 }
 
 //Удалить элемент списка по позиции
@@ -292,6 +303,12 @@ void slinkedlist::List::printList()
         std::cout << std::setw(25) << temp -> x.name << " "  << temp -> x.adress << std::endl;
         temp = temp -> next;
     }
+}
+
+//Удаление списка
+void slinkedlist::List::makenull()
+{
+    _head = deleteList(_head);
 }
 
 //Получить предыдущий элемент
@@ -538,6 +555,12 @@ void dlinkedlist::List::printList()
     }
 }
 
+//Удаление списка
+void dlinkedlist::List::makenull()
+{
+    _list = deleteList(_list);
+}
+
 //Удалить элемент в позиции p со смещением
 dlinkedlist::node * dlinkedlist::List::delete_with_change(node * list, t_position pos)
 {
@@ -743,6 +766,22 @@ cursorlist::t_position cursorlist::List::deleteEl(t_position p)
     } else
     {
         return fake_c.next; //Возвращаем позицию фэйкового элемента
+    }
+}
+
+//Удаление списка
+void cursorlist::List::makenull()
+{
+    node iter = List::_arr[_lpos];//Записываем в итератор, первый элемент списка
+    int i = _lpos;//i является началом списка
+    while(i != ENDL)
+    {
+        strcpy(List::_arr[i].data.name,""); //Заполняем данные пустой строкой, чтобы было удобнее читать
+        strcpy(List::_arr[i].data.adress,"");//Заполняем данные пустой строкой, чтобы было удобнее читать
+        List::_arr[i].next = _space; //Завязываем элемент на список пустых
+        List::_space = i; //Новый первый элемент списка пустых - это текущий
+        i = iter.next;
+        iter = List::_arr[iter.next];
     }
 }
 

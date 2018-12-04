@@ -45,7 +45,7 @@ namespace arrlist
         t_position deleteEl(t_position p); //Удалить элемент списка по позиции
         t_position next(t_position p); //Вернуть следующий элемент, после позиции p
         t_position prev(t_position p); //Вернуть предыдущий элемент, до позиции p
-    //    void makenull();
+        void makenull(); //Заполнить массив пустыми значениями
         void printList(); //Вывести список
 
     private:
@@ -87,6 +87,7 @@ namespace slinkedlist {
         t_position locate(elem x);//Вернуть позицию элемента x в списке
         elem retrieve(t_position position);//Вернуть элемент по позиции в списке
         t_position deleteEl(t_position position);//Удалить элемент списка по позиции
+        void makenull(); //Удаление списка
 
     private:
         node * _head; //Голова списка
@@ -139,7 +140,7 @@ namespace dlinkedlist
         t_position locate(elem x);//Вернуть позицию элемента x в списке
         elem retrieve(t_position position);//Вернуть элемент по позиции в списке
         t_position deleteEl(t_position position);//Удалить элемент списка по позиции
-
+        void makenull(); //Удаление списка
     private:
         t_HT _list; //Голова и хвост списка
         bool position_exist(t_position position, node * list);//Существует ли позиция в списке
@@ -178,7 +179,7 @@ namespace cursorlist
         t_position deleteEl(t_position p);//Удалить элемент списка по позиции
         t_position next(t_position p);//Вернуть следующий элемент, после позиции p
         t_position prev(t_position p);//Вернуть предыдущий элемент, до позиции p
-//    void makenull();
+        void makenull(); //Удаление списка
         void printList();//Вывести список
 
     private:
