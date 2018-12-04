@@ -16,11 +16,11 @@ struct elem
 {
     char name[20]; //Имя
     char adress[20]; //Адрес
-    elem() {strcpy(name, ""); strcpy(adress, "");}; //Конструктор по умолчанию, инициализируем строки
+    elem() {name[0] = '\0'; adress[0] = '\0';}; //Конструктор по умолчанию, инициализируем строки
     elem(char * n, char * a) {strcpy(name, n);strcpy(adress, a);}; //Конструктор с параметрами
 };
 
-namespace arrlist
+namespace arrlist //Реализация списков на массиве
 {
 
     typedef int t_position; //тип позиции элемента
@@ -52,15 +52,11 @@ namespace arrlist
         node _arr[SIZE]; //Массив структур node(для фейкового элемента)
         int _endl; //Последний элемент списка
         bool pos_exist(t_position p); //Существует ли позиция в списке
-        void add_with_change(elem x, int p); //Добавить элемент x в позицию p со смещением
-        t_position search_same_pos(elem x); //Поиск одинакового элемента в списке
-        t_position delete_with_change(t_position p); //Удалить элемент в позиции p со смещением
-        void add_to_tail(elem x); //Добавить в конец списка элемент x
+        t_position search_same_pos(elem x); //Поиск по значению
     };
 }
 
-namespace slinkedlist {
-
+namespace slinkedlist { //Реализация списков на односвязном списке
 
     struct node //Узел списка
     {
@@ -104,7 +100,7 @@ namespace slinkedlist {
 
 }
 
-namespace dlinkedlist
+namespace dlinkedlist //Реализация списков на двусвязном списке
 {
 
     struct node //Узел списка
@@ -154,7 +150,7 @@ namespace dlinkedlist
 
 }
 
-namespace cursorlist
+namespace cursorlist //Реализация списков на курсорах
 {
 
     struct node //Элемент курсоров

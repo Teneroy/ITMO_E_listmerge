@@ -174,5 +174,24 @@ int main()
     std::cout << "_____________________________________________________________________________________________________________________" << std::endl;
     std::cout << "---------------------------------------------------------------------------------------------------------------------" << std::endl;
 
+    /*ARRAY LIST*/
+    arrlist::List obj_test;
+    obj_test.insert(3, x);
+    obj_test.insert(0, x);
+    obj_test.insert(2, x);
+    obj_test.insert(1, y);
+    obj_test.insert(6, x);
+    obj_test.insert(2, z);
+    obj_test.printList();
+
+    obj_test.insert(1, z);
+    obj_test.printList();
+
+    obj_test.insert(2, x);
+    obj_test.printList();
+
+    obj_test.insert(5, y);
+    obj_test.printList();
+
 return 0;
 }
