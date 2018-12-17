@@ -92,7 +92,6 @@ namespace slinkedlist { //Реализация списков на односв�
         node * add_to_pos(node * list, t_position pos, elem x);//Добавить элемент x в позицию p
         node * deleteList(node * list);//Удалить список
         t_position search_same_pos(node * list, elem x);//Поиск одинакового элемента в списке
-        elem search_same_el(node * list, t_position pos); //Поиск одинаковой позиции в списке
         node * delete_with_change(node * list, t_position pos);//Удалить элемент в позиции p со смещением
         node * get_prev_el(node * list, t_position pos); //Получить предыдущий элемент
         node * get_last_el(node * list); //Получить последний элемент
@@ -144,7 +143,6 @@ namespace dlinkedlist //Реализация списков на двусвяз�
         node * add_to_pos(node * list, t_position pos, elem x);//Добавить элемент x в позицию p
         t_HT deleteList(t_HT list);//Удалить список
         t_position search_same_pos(node * list, elem x); //Поиск одинакового элемента в списке
-        elem search_same_el(node * list, t_position pos); //Поиск одинаковой позиции в списке
         node * delete_with_change(node * list, t_position pos);//Удалить элемент в позиции p со смещением
     };
 
@@ -189,7 +187,6 @@ namespace cursorlist //Реализация списков на курсорах
         t_position get_next_el(t_position p); //Получить позицию следующего элемента, после p
         void add_with_change(elem x, t_position p); //Добавить элемент x в позицию p со смещением
         t_position search_same_pos(elem x); // Поиск одинакового элемента в списке
-        elem search_same_el(t_position p); //Поиск одинаковой позиции в списке
         t_position delete_with_change(t_position p); //Удалить элемент в позиции p со смещением
     };
 
