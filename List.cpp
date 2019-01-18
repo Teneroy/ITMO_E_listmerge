@@ -19,7 +19,7 @@ void arrlist::List::printList()
     for (int i = 0; i < _endl; ++i)
     {
         std::cout << std::setw(25) << i;
-        std::cout << std::setw(25) << _arr[i].data.name << " " << _arr[i].data.adress << std::endl;
+        std::cout << std::setw(25) << _arr[i].data << std::endl;
     }
 }
 
@@ -139,7 +139,7 @@ arrlist::t_position arrlist::List::search_same_pos(elem x)
 {
     for(int i = 0; i < _endl; i++)
     {
-        if(_arr[i].data.name == x.name && _arr[i].data.adress == x.adress) //Если данные обоих элементов равны
+        if(_arr[i].data == x) //Если данные обоих элементов равны
         {
             return i; //Возвращаем текущую позицию
         }
@@ -167,15 +167,16 @@ void slinkedlist::List::insert(t_position p, elem x)
 {
     if(_head == nullptr) //Если список пуст
     {
-        _head = new node; //Добавляем новую голову
-        _head -> x = x;
-        _head -> next = nullptr;
+        _head = new node(x, nullptr); //Добавляем новую голову
     } else if(p == endL()) //Если позиция равна концу списка
     {
         _head = add_to_tail(_head, x);  //Добавляем элемент в хвост
-    } else if(get_prev_el(_head, p) != nullptr || p == _head) //Если позиция существует
+    } else if(p == _head) //Если позиция существует
     {
         _head = add_to_pos(_head, p, x); //Добавляем элемент в текущую позицию
+    } else if(get_prev_el(_head, p) != nullptr)
+    {
+        _head = add_to_pos(_head, p, x);
     } else
     {
         std::cout << "position does not exist" << std::endl; //Выводим сообщение об ошибке
@@ -201,11 +202,18 @@ slinkedlist::t_position slinkedlist::List::next(t_position position)
     {
         return nullptr; //Возвращаем конец списка
     }
-    if(!(get_prev_el(_head, position) != nullptr || position == _head)) //Если позиции не существует
+    if(position -> next == nullptr)
     {
-        return fake.next; //Возвращаем адрес фейкового элемента
+        return nullptr;
     }
-    return position -> next; //Если позиция удовлетворяет всем условиям, возвращаем указатель на следующий элемент списка
+    if(position == _head) //Если позиция равна голове
+    {
+        return position -> next; //Если позиция удовлетворяет всем условиям, возвращаем указатель на следующий элемент списка
+    } else if(get_prev_el(_head, position) != nullptr)//Если позиция существует
+    {
+        return position -> next; //Если позиция удовлетворяет всем условиям, возвращаем указатель на следующий элемент списка
+    }
+    return fake.next; //Возвращаем адрес фейкового элемента
 }
 
 //Вернуть предыдущий элемент, до позиции p
@@ -215,7 +223,11 @@ slinkedlist::t_position slinkedlist::List::prev(t_position position)
     {
         return get_last_el(_head); //Вернуть последний элемент
     }
-    if(!(get_prev_el(_head, position) != nullptr || position == _head)) //Если позиции не существует
+    if(position == _head)
+    {
+        return nullptr;
+    }
+    if(get_prev_el(_head, position) == nullptr) //Если элемента не существует
     {
         return fake.next; //Возвращаем адрес фейкового элемента
     }
@@ -238,28 +250,33 @@ slinkedlist::t_position slinkedlist::List::locate(elem x)
 //Вернуть элемент по позиции в списке
 elem slinkedlist::List::retrieve(t_position position)
 {
-   t_position temp = get_prev_el(_head, position);
-   if(temp != nullptr || position == _head)
+   if(position == _head)
    {
        return position -> x;//Вернуть элемент по позиции
    } else
    {
-       return fake.x;
+       t_position temp = get_prev_el(_head, position);
+       if(temp != nullptr) //Если позиция существует
+       {
+           return position -> x;//Вернуть элемент по позиции
+       }
    }
+   return fake.x;
 }
 
 //Удалить элемент списка по позиции
 slinkedlist::t_position slinkedlist::List::deleteEl(t_position position)
 {
-    if(position == _head || get_prev_el(_head, position) != nullptr) //Если позиция существует
+    if(position != _head) //Если позиция существует
     {
-        node * next = position -> next; // Записываем позицию, после последнего
-        _head = delete_with_change(_head, position); //Удаляем со смещением
-        return next; //Возвращаем позицию, после текущего элемента
-    } else
-    {
-        return fake.next; //Возвращаем адрес фэйкового элемента
+        if(get_prev_el(_head, position) == nullptr)
+        {
+            return fake.next; //Возвращаем адрес фэйкового элемента
+        }
     }
+    node * next = position -> next; // Записываем позицию, после последнего
+    _head = delete_with_change(_head, position); //Удаляем со смещением
+    return next; //Возвращаем позицию, после текущего элемента
 }
 
 //Вывести список
@@ -269,7 +286,7 @@ void slinkedlist::List::printList()
     std::cout << std::setw(25) << "<data>" << std::endl;
     while(temp != nullptr)
     {
-        std::cout << std::setw(25) << temp -> x.name << " "  << temp -> x.adress << std::endl;
+        std::cout << std::setw(25) << temp -> x << std::endl;
         temp = temp -> next;
     }
 }
@@ -309,7 +326,7 @@ slinkedlist::node * slinkedlist::List::get_last_el(node * list)
     return nullptr; //Если элемента нет, то возвращаем нулевой указатель
 }
 
-//Удалить элемент в позиции p со смещением
+//Удалить элемент в позиции p
 slinkedlist::node * slinkedlist::List::delete_with_change(node * list, t_position pos)
 {
     node * temp = list;
@@ -332,7 +349,7 @@ slinkedlist::t_position slinkedlist::List::search_same_pos(node * list, elem x)
     node * temp = list;
     while(temp != nullptr)
     {
-        if(x.adress == temp -> x.adress && x.name == temp -> x.name) //Данные совпадают
+        if(x == temp -> x) //Данные совпадают
         {
             return temp; //Возвращаем позицию
         }
@@ -375,9 +392,7 @@ slinkedlist::node * slinkedlist::List::add_to_tail(node * list, elem x)
 //Добавить элемент x в позицию p
 slinkedlist::node * slinkedlist::List::add_to_pos(node * list, t_position pos, elem x)
 {
-    node * temp2 = new node(); //Выделяем память
-    temp2 -> x = x; //Присапиваем значение
-    temp2 -> next = pos -> next; //Следующий элемент равен следующий элемент позиции
+    node * temp2 = new node(x, pos -> next); //Выделяем память
     pos -> next = temp2; //Следующий элемент позиции равен новому элементу
     return list; //Возвращаем указатель на голову
 }
@@ -399,10 +414,7 @@ void dlinkedlist::List::insert(t_position p, elem x)
 {
     if(_head == nullptr)//Если список пуст
     {
-        node * temp = new node;//Добавляем новую голову
-        temp -> next = nullptr;
-        temp -> x = x;
-        temp -> prev = nullptr;
+        node * temp = new node(x, nullptr, nullptr);//Добавляем новую голову
         _head = _tail = temp;
     } else if(p == nullptr)//Если позиция равна концу списка
     {
@@ -435,6 +447,10 @@ dlinkedlist::t_position dlinkedlist::List::next(t_position position)
     {
         return nullptr;//Возвращаем конец строки
     }
+    if(position -> next == nullptr)
+    {
+        return nullptr;
+    }
     if(!position_exist(position, _head))//Если позиции не существует
     {
         return fake_d.next;//Возвращаем адрес фейкового элемента
@@ -448,6 +464,10 @@ dlinkedlist::t_position dlinkedlist::List::prev(t_position position)
     if(position == nullptr)//Если позиция равна концу строки
     {
         return _tail;//Вернуть последний элемент
+    }
+    if(position == _head)
+    {
+        return nullptr;
     }
     if(!position_exist(position, _head))//Если позиции не существует
     {
@@ -503,7 +523,7 @@ void dlinkedlist::List::printList()
     std::cout << std::setw(25) << "<data>" << std::endl;
     while(temp != nullptr)
     {
-        std::cout << std::setw(25) << temp -> x.name << " " << temp -> x.adress << std::endl;
+        std::cout << std::setw(25) << temp -> x << std::endl;
         temp = temp -> next;
     }
 }
@@ -514,23 +534,15 @@ void dlinkedlist::List::makenull()
     _head = deleteList(_head, _tail);
 }
 
-//Удалить элемент в позиции p со смещением
+//Удалить элемент в позиции p
 dlinkedlist::node * dlinkedlist::List::delete_with_change(node * list, t_position pos)
 {
-    node * temp = list;
-    while (temp != nullptr)
-    {
-        if(temp -> next == pos)//Если следующий элемент равен позиции удаляемого элемента
-        {
-            temp -> next = pos -> next;//Записываем в следкющий элемент, элемент, после удаляемого
-            if(pos -> next != nullptr)  //Если следующий элемент не является концом списка
-                pos -> next -> prev = temp; //Присваиваем указателю на предыдущий элемент следующего текушую позицию
-            delete pos;//Удаляем элемент в позиции pos
-            return list;//Возвращаем список
-        }
-        temp = temp -> next;
-    }
-    return nullptr;//Если позиции нет, возвращаем нулевой указатель
+    node * temp = pos -> prev;
+    temp -> next = pos -> next;//Записываем в следкющий элемент, элемент, после удаляемого
+    if(pos -> next != nullptr)  //Если следующий элемент не является концом списка
+        pos -> next -> prev = temp; //Присваиваем указателю на предыдущий элемент следующего текушую позицию
+    delete pos;//Удаляем элемент в позиции pos
+    return list;//Возвращаем список
 }
 
 //Поиск одинакового элемента в списке
@@ -539,7 +551,7 @@ dlinkedlist::t_position dlinkedlist::List::search_same_pos(node * list, elem x)
     node * temp = list;
     while(temp != nullptr)
     {
-        if(x.adress == temp -> x.adress && x.name == temp -> x.name)//Данные совпадают
+        if(x == temp -> x)//Данные совпадают
         {
             return temp;//Возвращаем позицию
         }
@@ -581,10 +593,7 @@ bool dlinkedlist::List::position_exist(t_position position, node * list)
 //Добавить элемент в хвост(передаем ХВОСТ! в качестве параметра)
 dlinkedlist::node * dlinkedlist::List::add_to_tail(node * list, elem x)
 {
-    node * temp_t = new node();
-    temp_t -> x = x;
-    temp_t -> next = nullptr;
-    temp_t -> prev = list;
+    node * temp_t = new node(x, nullptr, list);
     list -> next = temp_t;
     return temp_t;
 }
@@ -592,17 +601,14 @@ dlinkedlist::node * dlinkedlist::List::add_to_tail(node * list, elem x)
 //Добавить элемент x в позицию p
 dlinkedlist::node * dlinkedlist::List::add_to_pos(node * list, t_position pos, elem x)
 {
-    node * temp2 = new node();//Выделяем память
-    temp2 -> x = x;//Присапиваем хначение
-    temp2 -> next = pos -> next;//Следующий элемент равен следующий элемент позиции
-    temp2 -> prev = pos;//Предыдущий элемент равен позиции
+    node * temp2 = new node(x, pos -> next, pos);//Выделяем память
     pos -> next = temp2;//Следующий элемент позиции равен новому элементу
     return list;//Возвращаем указатель на голову
 }
 
 cursorlist::node fake_c; //Фэйковый элемент для курсоров, возвращается при ошибке(fake.next, если нужно вернуть позицию, fake.data, если объект)
 
-int cursorlist::List::_space = -1; //Инициализируем статическую переменную SPACE, давая ей значение неинициализированного списка
+int cursorlist::List::_space = 0; //Инициализируем статическую переменную SPACE, давая ей значение неинициализированного списка
 cursorlist::node cursorlist::List::_arr[SIZE];
 
 void cursorlist::List::InitArr() //Инициализация массива списком пустых
@@ -621,10 +627,6 @@ void cursorlist::List::InitArr() //Инициализация массива с�
 cursorlist::List::List()
 {
     _lpos = ENDL; //Позиция текущего списка, указывает на конец
-    if(List::_space == -1) //Если список пустых не инициализирован
-    {
-        List::InitArr(); //Инициализируем список пустых
-    }
 }
 
 //Вывести список
@@ -637,7 +639,7 @@ void cursorlist::List::printList()
     int i = _lpos; //i является началом списка
     while(i != ENDL)
     {
-        std::cout << std::setw(25) << i << " " << std::setw(25) << List::_arr[i].data.adress << " " << std::setw(25) << List::_arr[i].next << std::endl;
+        std::cout << std::setw(25) << i << " " << std::setw(25) << _arr[i].data << " " << std::setw(25) << iter.next << std::endl;
         i = iter.next;
         iter = List::_arr[iter.next];
     }
@@ -650,11 +652,14 @@ void cursorlist::List::insert(t_position p, elem x)
     {
         if(_lpos != ENDL) //Если список не пуст
         {
-            int p_pos = get_prev_el(-1); //Получаем позицию последнего элемента
+            int p_pos = get_prev_el(ENDL); //Получаем позицию последнего элемента
             List::_arr[p_pos].next = List::_space; //Указываем на первый пустой элемент
         }
         add_after(x); //Добавляем элемент в конец списка
-    } else if(get_prev_el(p) != -1 || p == _lpos) //Если позиция существует
+    } else if(p == _lpos) //Если позиция существует
+    {
+        add_with_change(x, p); //Добавляем элемент в позицию со смещением
+    } else if(get_prev_el(p) != -1)
     {
         add_with_change(x, p); //Добавляем элемент в позицию со смещением
     } else
@@ -666,12 +671,16 @@ void cursorlist::List::insert(t_position p, elem x)
 //Вернуть следующий элемент, после позиции p
 cursorlist::t_position cursorlist::List::next(t_position p)
 {
-    if(get_prev_el(p) != -1 || p == _lpos)//Если позиция существует
+    if(p != _lpos)
     {
+        if(get_prev_el(p) == -1)
+        {
+            return fake_c.next;
+        }
         return List::_arr[p].next;//Вернуть следующий элемент, после позиции p
     } else
     {
-        return fake_c.next;
+        return List::_arr[p].next;//Вернуть следующий элемент, после позиции p
     }
 }
 
@@ -707,31 +716,39 @@ cursorlist::t_position cursorlist::List::locate(elem x)
         return fake_c.next;
     } else
     {
-        return temp;//Возвращаем позицию одинакового элемента(если он есть), все проверки в функции
+        return temp;//Возвращаем позицию одинакового элемента
     }
 }
 
 //Вернуть элемент по позиции в списке
 elem cursorlist::List::retrieve(t_position p)
 {
-    if(get_prev_el(p) != -1 || p == _lpos)
+    if(p != _lpos)
     {
-        return List::_arr[p].data;//Возвращаем элемент на одинаковой позиции(если она есть), все проверки в функции
+        if(get_prev_el(p) == -1)
+        {
+            return fake_c.data;
+        }
+        return List::_arr[p].data;//Возвращаем элемент на одинаковой позиции
     } else
     {
-        return fake_c.data;
+        return List::_arr[p].data;//Возвращаем элемент на одинаковой позиции
     }
 }
 
 //Удалить элемент списка по позиции
 cursorlist::t_position cursorlist::List::deleteEl(t_position p)
 {
-    if(get_prev_el(p) || _lpos == p) //Существует ли позиция
+    if(p != _lpos)
     {
+        if(get_prev_el(p) == -1)
+        {
+            return fake_c.next;
+        }
         return delete_with_change(p);//Удаляем элемент в позиции p со смещением
     } else
     {
-        return fake_c.next; //Возвращаем позицию фэйкового элемента
+        return delete_with_change(p);//Удаляем элемент в позиции p со смещением
     }
 }
 
@@ -773,14 +790,14 @@ cursorlist::t_position cursorlist::List::search_same_pos(elem x)
     int i = _lpos; //i является началом списка
     while(i != ENDL)
     {
-        if(x.adress == iter.data.adress && x.name == iter.data.name)//Если текущие данные равны с данными объекта x
+        if(x == iter.data)//Если текущие данные равны с данными объекта x
         {
             return i; //Вернуть текущую позицию
         }
         i = iter.next;
         iter = List::_arr[iter.next];
     }
-    return ENDL; //Если ничего не нашли, возврашаем позицию фейкового объекта
+    return -1; //Если ничего не нашли, возврашаем -1
 }
 
 //Добавить элемент x в позицию p со смещением
