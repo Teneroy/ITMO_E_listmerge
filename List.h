@@ -88,7 +88,6 @@ namespace slinkedlist { //Реализация списков на односв�
         t_position search_same_pos(node * list, elem  x);//Поиск одинакового элемента в списке
         node * delete_with_change(node * list, t_position pos);//Удалить элемент в позиции p
         node * get_prev_el(node * list, t_position pos); //Получить предыдущий элемент
-        node * get_last_el(node * list); //Получить последний элемент
     };
 
 }
