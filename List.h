@@ -32,9 +32,9 @@ namespace arrlist //Реализация списков на массиве
     public:
         List();
         void insert(t_position p, elem  x); //Вставка в список
-        t_position endL(); //Вернуть последний элемент
-        t_position firstL(); //Вернуть первый элемент
-        t_position locate(elem  x); //Вернуть позицию элемента x в списке
+        t_position endL() const; //Вернуть последний элемент
+        t_position firstL() const; //Вернуть первый элемент
+        t_position locate(const elem &x); //Вернуть позицию элемента x в списке
         elem  retrieve(t_position p); //Вернуть элемент по позиции в списке
         t_position deleteEl(t_position p); //Удалить элемент списка по позиции
         t_position next(t_position p); //Вернуть следующий элемент, после позиции p
@@ -46,7 +46,7 @@ namespace arrlist //Реализация списков на массиве
         node _arr[SIZE]; //Массив структур node(для фейкового элемента)
         int _endl; //Последний элемент списка
         bool pos_exist(t_position p); //Существует ли позиция в списке
-        t_position search_same_pos(elem  x); //Поиск по значению
+        t_position search_same_pos(const elem &x); //Поиск по значению
     };
 }
 

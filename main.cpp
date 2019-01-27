@@ -5,7 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include "List.h"
-using namespace cursorlist;
+using namespace arrlist;
 
 void readFile(List &l, const char * fname)
 {

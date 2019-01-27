@@ -44,13 +44,13 @@ void arrlist::List::insert(t_position p, elem x)
 }
 
 //Вернуть последний элемент
-arrlist::t_position arrlist::List::endL()
+arrlist::t_position arrlist::List::endL() const
 {
     return _endl; //Возвращаем позицию конца списка
 }
 
 //Вернуть первый элемент
-arrlist::t_position arrlist::List::firstL()
+arrlist::t_position arrlist::List::firstL() const
 {
     return 0; //Возвращаем позицию первого элемента, он всегда на нулевой позиции
 }
@@ -92,7 +92,7 @@ elem arrlist::List::retrieve(t_position p)
 }
 
 //Вернуть позицию элемента x в списке
-arrlist::t_position arrlist::List::locate(elem x)
+arrlist::t_position arrlist::List::locate(const elem &x)
 {
     int pos = search_same_pos(x); //Ищем нужную позицию по элементу
     return pos; //Возвращаем позицию
@@ -128,7 +128,7 @@ bool arrlist::List::pos_exist(t_position p)
 }
 
 //Поиск одинакового элемента в списке
-arrlist::t_position arrlist::List::search_same_pos(elem x)
+arrlist::t_position arrlist::List::search_same_pos(const elem &x)
 {
     for(int i = 0; i < _endl; i++)
     {
