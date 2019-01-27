@@ -6,6 +6,9 @@
 
 arrlist::node fake_a; //Фэйковый элемент для массива, возвращается при ошибке(fake.next, если нужно вернуть позицию, fake.data, если объект)
 
+void arrlist::List::InitArr()
+{}
+
 arrlist::List::List()
 {
     _endl = 0; //Конец списка, обозначает, что список пустой
@@ -141,6 +144,9 @@ arrlist::t_position arrlist::List::search_same_pos(elem x)
 /*SINGLE LINKED LIST*/
 
 slinkedlist::node fake; //Фэйковый элемент для односвязного списка, возвращается при ошибке(fake.next, если нужно вернуть позицию, fake.data, если объект)
+
+void slinkedlist::List::InitArr()
+{}
 
 slinkedlist::List::List()
 {
@@ -375,6 +381,9 @@ slinkedlist::node * slinkedlist::List::add_to_pos(node * list, t_position pos, e
 }
 
 dlinkedlist::node fake_d; //Фэйковый элемент для двусвязного списка, возвращается при ошибке(fake.next, если нужно вернуть позицию, fake.data, если объект)
+
+void dlinkedlist::List::InitArr()
+{}
 
 dlinkedlist::List::List()
 {
