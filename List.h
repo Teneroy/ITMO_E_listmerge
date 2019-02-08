@@ -8,14 +8,15 @@
 #include <iostream>
 #include "string.h"
 #include <iomanip>
-#define SIZE 10 //Размер массива
-#define ENDL -1 //Конец списка(используется для курсоров)
+//#define SIZE 10 //Размер массива
+//#define ENDL -1 //Конец списка(используется для курсоров)
 
 
 #include "base-types.h"
 
 namespace arrlist //Реализация списков на массиве
 {
+    enum{SIZE = 10};
 
     typedef int t_position; //тип позиции элемента
 
@@ -24,29 +25,28 @@ namespace arrlist //Реализация списков на массиве
         elem  data;//Данные
         int next;//Позиция следующего элемента
         node() {next = -1;}; //Конструктор по умолчанию
-        node(elem  d, int n):data(d),next(n) {}; //Конструктор с параметрами
     };
 
     class List
     {
     public:
         List();
-        void insert(t_position p, elem  x); //Вставка в список
+        void insert(t_position p, const elem &x); //Вставка в список
         t_position endL() const; //Вернуть последний элемент
         t_position firstL() const; //Вернуть первый элемент
-        t_position locate(const elem &x); //Вернуть позицию элемента x в списке
-        elem  retrieve(t_position p); //Вернуть элемент по позиции в списке
+        t_position locate(const elem &x) const; //Вернуть позицию элемента x в списке
+        elem  retrieve(t_position p) const; //Вернуть элемент по позиции в списке
         t_position deleteEl(t_position p); //Удалить элемент списка по позиции
-        t_position next(t_position p); //Вернуть следующий элемент, после позиции p
-        t_position prev(t_position p); //Вернуть предыдущий элемент, до позиции p
+        t_position next(t_position p) const; //Вернуть следующий элемент, после позиции p
+        t_position prev(t_position p) const; //Вернуть предыдущий элемент, до позиции p
         void makenull(); //Заполнить массив пустыми значениями
-        void printList(); //Вывести список
+        void printList() const; //Вывести список
         static void InitArr();
     private:
         node _arr[SIZE]; //Массив структур node(для фейкового элемента)
         int _endl; //Последний элемент списка
-        bool pos_exist(t_position p); //Существует ли позиция в списке
-        t_position search_same_pos(const elem &x); //Поиск по значению
+        bool pos_exist(t_position p) const; //Существует ли позиция в списке
+        t_position search_same_pos(const elem &x) const; //Поиск по значению
     };
 }
 
@@ -69,25 +69,25 @@ namespace slinkedlist { //Реализация списков на односв�
     public:
         List();
         ~List();
-        void insert(t_position p, elem  x);//Вставка в список
-        void printList();//Вывести список
-        t_position endL();//Вернуть последний элемент
-        t_position firstL();//Вернуть первый элемент
-        t_position next(t_position position);//Вернуть следующий элемент, после позиции p
-        t_position prev(t_position position);//Вернуть предыдущий элемент, до позиции p
-        t_position locate(elem  x);//Вернуть позицию элемента x в списке
-        elem  retrieve(t_position position);//Вернуть элемент по позиции в списке
+        void insert(t_position p, const elem &x);//Вставка в список
+        void printList() const;//Вывести список
+        t_position endL() const;//Вернуть последний элемент
+        t_position firstL() const;//Вернуть первый элемент
+        t_position next(t_position position) const;//Вернуть следующий элемент, после позиции p
+        t_position prev(t_position position) const;//Вернуть предыдущий элемент, до позиции p
+        t_position locate(const elem &x) const;//Вернуть позицию элемента x в списке
+        elem  retrieve(t_position position) const;//Вернуть элемент по позиции в списке
         t_position deleteEl(t_position position);//Удалить элемент списка по позиции
         void makenull(); //Удаление списка
         static void InitArr();
     private:
         node * _head; //Голова списка
-        node * add_to_tail(node * list, elem  x);//Добавить элемент в хвост
-        node * add_to_pos(node * list, t_position pos, elem  x);//Добавить элемент x в позицию p
+        node * add_to_tail(node * list, const elem &x);//Добавить элемент в хвост
+        node * add_to_pos(node * list, t_position pos, const elem &x);//Добавить элемент x в позицию p
         node * deleteList(node * list);//Удалить список
-        t_position search_same_pos(node * list, elem  x);//Поиск одинакового элемента в списке
+        t_position search_same_pos(node * list, const elem &x) const;//Поиск элемента в списке
         node * delete_with_change(node * list, t_position pos);//Удалить элемент в позиции p
-        node * get_prev_el(node * list, t_position pos); //Получить предыдущий элемент
+        node * get_prev_el(node * list, t_position pos) const; //Получить предыдущий элемент
     };
 
 }
@@ -114,25 +114,25 @@ namespace dlinkedlist //Реализация списков на двусвяз�
     public:
         List();
         ~List();
-        void insert(t_position p, elem  x); //Вставка в список
-        void printList();//Вывести список
-        t_position endL();//Вернуть конец списка
-        t_position firstL();//Вернуть первый элемент
-        t_position next(t_position position);//Вернуть следующий элемент, после позиции p
-        t_position prev(t_position position);//Вернуть предыдущий элемент, до позиции p
-        t_position locate(elem  x);//Вернуть позицию элемента x в списке
-        elem  retrieve(t_position position);//Вернуть элемент по позиции в списке
+        void insert(t_position p, const elem &x); //Вставка в список
+        void printList() const;//Вывести список
+        t_position endL() const;//Вернуть конец списка
+        t_position firstL() const;//Вернуть первый элемент
+        t_position next(t_position position) const;//Вернуть следующий элемент, после позиции p
+        t_position prev(t_position position) const;//Вернуть предыдущий элемент, до позиции p
+        t_position locate(const elem &x) const;//Вернуть позицию элемента x в списке
+        elem  retrieve(t_position position) const;//Вернуть элемент по позиции в списке
         t_position deleteEl(t_position position);//Удалить элемент списка по позиции
         void makenull(); //Удаление списка
         static void InitArr();
     private:
         node * _head;//Голова списка
         node * _tail;//Хвост списка
-        bool position_exist(t_position position, node * list);//Существует ли позиция в списке
-        node * add_to_tail(node * list, elem  x);//Добавить элемент в хвост
-        node * add_to_pos(node * list, t_position pos, elem  x);//Добавить элемент x в позицию p
+        bool position_exist(t_position position, node * list) const;//Существует ли позиция в списке
+        node * add_to_tail(node * list, const elem &x);//Добавить элемент в хвост
+        node * add_to_pos(node * list, t_position pos, const elem &x);//Добавить элемент x в позицию p
         node * deleteList(node * head, node * tail);//Удалить список
-        t_position search_same_pos(node * list, elem  x); //Поиск одинакового элемента в списке
+        t_position search_same_pos(node * list, const elem &x) const; //Поиск элемента в списке
         node * delete_with_change(node * list, t_position pos);//Удалить элемент в позиции p
     };
 
@@ -140,6 +140,8 @@ namespace dlinkedlist //Реализация списков на двусвяз�
 
 namespace cursorlist //Реализация списков на курсорах
 {
+
+    enum {ENDL = -1, SIZE = 10, ERR = -1};
 
     struct node //Элемент курсоров
     {
@@ -155,26 +157,26 @@ namespace cursorlist //Реализация списков на курсорах
     {
     public:
         List();
-        void insert(t_position p, elem  x);//Вставка в список
-        t_position endL();//Вернуть последний элемент
-        t_position firstL();//Вернуть первый элемент
-        t_position locate(elem  x);//Вернуть позицию элемента x в списке
-        elem  retrieve(t_position p);//Вернуть элемент по позиции в списке
+        void insert(t_position p, const elem &x);//Вставка в список
+        t_position endL() const;//Вернуть последний элемент
+        t_position firstL() const;//Вернуть первый элемент
+        t_position locate(const elem &x) const;//Вернуть позицию элемента x в списке
+        elem  retrieve(t_position p) const;//Вернуть элемент по позиции в списке
         t_position deleteEl(t_position p);//Удалить элемент списка по позиции
-        t_position next(t_position p);//Вернуть следующий элемент, после позиции p
-        t_position prev(t_position p);//Вернуть предыдущий элемент, до позиции p
+        t_position next(t_position p) const;//Вернуть следующий элемент, после позиции p
+        t_position prev(t_position p) const;//Вернуть предыдущий элемент, до позиции p
         void makenull(); //Удаление списка
-        void printList();//Вывести список
+        void printList() const;//Вывести список
         static void InitArr(); //Инициализация массива
     private:
         static node _arr[SIZE]; //Массив для списков, задан статически, чтобы данные сохранялись при добавлении других списков
         static t_position _space; //Позиция первого пустого элемента
         t_position _lpos; //Позиция первого элемента текущего списка
-        void add_after(elem  x); //Добавить элемент в конец списка
-        t_position get_prev_el(t_position p); //Получить позицию предыдущего элемента, до p
-        void add_with_change(elem  x, t_position p); //Добавить элемент x в позицию p со смещением
-        t_position search_same_pos(elem  x); // Поиск одинакового элемента в списке
-        t_position delete_with_change(t_position p); //Удалить элемент в позиции p со смещением
+        void add_after(const elem &x); //Добавить элемент в конец списка
+        t_position get_prev_el(t_position p) const; //Получить позицию предыдущего элемента, до p
+        void add_with_change(const elem &x, t_position p); //Добавить элемент x в позицию p
+        t_position search_same_pos(const elem &x) const; // Поиск элемента в списке
+        t_position delete_with_change(t_position p); //Удалить элемент в позиции p
     };
 
 }

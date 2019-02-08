@@ -5,7 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include "List.h"
-using namespace arrlist;
+using namespace dlinkedlist;
 
 void readFile(List &l, const char * fname)
 {

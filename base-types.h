@@ -9,7 +9,7 @@ struct elem
     char name[20]; //Имя
     char adress[20]; //Адрес
     elem() {name[0] = '\0'; adress[0] = '\0';}; //Конструктор по умолчанию, инициализируем строки
-    elem(char * n, char * a) {strcpy(name, n);strcpy(adress, a);}; //Конструктор с параметрами
+    elem(const char * n, const char * a) {strcpy(name, n);strcpy(adress, a);}; //Конструктор с параметрами
     bool operator == ( const elem &ob ) const
     {
         return strcmp(name, ob.name) == 0;
@@ -17,6 +17,6 @@ struct elem
     friend std::ostream& operator<< ( std::ostream& out, const elem& x )
     {
         out << x.name << " " << x.adress;
-    };
+    }
 };
 #endif //ITMO_E_LISTMERGE_BASE_TYPES_H
