@@ -133,7 +133,7 @@ namespace dlinkedlist //Реализация списков на двусвяз�
         node * add_to_pos(node * list, t_position pos, const elem &x);//Добавить элемент x в позицию p
         node * deleteList(node * head, node * tail);//Удалить список
         t_position search_same_pos(node * list, const elem &x) const; //Поиск элемента в списке
-        node * delete_with_change(node * list, t_position pos);//Удалить элемент в позиции p
+        node * delete_with_change(node * head, t_position pos);//Удалить элемент в позиции p
     };
 
 }
