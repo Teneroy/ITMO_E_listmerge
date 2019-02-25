@@ -5,7 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include "List.h"
-using namespace dlinkedlist;
+using namespace cursorlist;
 
 void readFile(List &l, const char * fname)
 {
@@ -58,6 +58,5 @@ int main()
     std::cout << "-------------------------------------------------------RESULT:-------------------------------------------------------" << std::endl;
     obj.printList();
     std::cout << "_____________________________________________________________________________________________________________________" << std::endl;
-
 return 0;
 }

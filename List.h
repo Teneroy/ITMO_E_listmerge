@@ -16,7 +16,7 @@
 
 namespace arrlist //Реализация списков на массиве
 {
-    enum{SIZE = 10};
+    enum{SIZE = 10, ERR = -1};
 
     typedef int t_position; //тип позиции элемента
 
@@ -35,7 +35,7 @@ namespace arrlist //Реализация списков на массиве
         t_position endL() const; //Вернуть последний элемент
         t_position firstL() const; //Вернуть первый элемент
         t_position locate(const elem &x) const; //Вернуть позицию элемента x в списке
-        elem  retrieve(t_position p) const; //Вернуть элемент по позиции в списке
+        elem retrieve(t_position p) const; //Вернуть элемент по позиции в списке
         t_position deleteEl(t_position p); //Удалить элемент списка по позиции
         t_position next(t_position p) const; //Вернуть следующий элемент, после позиции p
         t_position prev(t_position p) const; //Вернуть предыдущий элемент, до позиции p
@@ -82,11 +82,9 @@ namespace slinkedlist { //Реализация списков на односв�
         static void InitArr();
     private:
         node * _head; //Голова списка
-        node * add_to_tail(node * list, const elem &x);//Добавить элемент в хвост
         node * add_to_pos(node * list, t_position pos, const elem &x);//Добавить элемент x в позицию p
         node * deleteList(node * list);//Удалить список
         t_position search_same_pos(node * list, const elem &x) const;//Поиск элемента в списке
-        node * delete_with_change(node * list, t_position pos);//Удалить элемент в позиции p
         node * get_prev_el(node * list, t_position pos) const; //Получить предыдущий элемент
     };
 
