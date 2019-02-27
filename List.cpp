@@ -22,7 +22,7 @@ void arrlist::List::printList() const
     for (int i = 0; i < _endl; ++i)
     {
         std::cout << std::setw(25) << i;
-        std::cout << std::setw(25) << _arr[i].data << std::endl;
+        std::cout << std::setw(25) << _arr[i] << std::endl;
     }
 }
 
@@ -35,7 +35,7 @@ void arrlist::List::insert(t_position p, const elem &x)
         {
             _arr[i + 1] = _arr[i]; //Заполняем последующий элемент текущим, для смешения
         }
-        _arr[p].data = x; //Вставляем эдемент в позицию
+        _arr[p] = x; //Вставляем эдемент в позицию
         _endl++; //Увеличиваем конец списка на 1
     } else
     {
@@ -84,7 +84,7 @@ elem arrlist::List::retrieve(t_position p) const
 {
     if(pos_exist(p)) //Если позиция существует
     {
-        return _arr[p].data; //Возвращаем elem по позиции
+        return _arr[p]; //Возвращаем elem по позиции
     } else
     {
         return fake_a.data; //Возвращаем данные с фэйкового элемента
@@ -137,7 +137,7 @@ arrlist::t_position arrlist::List::search_same_pos(const elem &x) const
 {
     for(int i = 0; i < _endl; i++)
     {
-        if(_arr[i].data == x) //Если данные обоих элементов равны
+        if(_arr[i] == x) //Если данные обоих элементов равны
         {
             return i; //Возвращаем текущую позицию
         }
@@ -255,7 +255,7 @@ slinkedlist::t_position slinkedlist::List::locate(const elem &x) const
 }
 
 //Вернуть элемент по позиции в списке
-elem slinkedlist::List::retrieve(t_position position) const
+elem& slinkedlist::List::retrieve(t_position position) const
 {
    if(position == _head)
    {
@@ -467,7 +467,7 @@ dlinkedlist::t_position dlinkedlist::List::locate(const elem &x) const
 }
 
 //Вернуть элемент по позиции в списке
-elem dlinkedlist::List::retrieve(t_position position) const
+elem& dlinkedlist::List::retrieve(t_position position) const
 {
     if(position != _head && position != _tail)
     {
@@ -529,16 +529,6 @@ void dlinkedlist::List::printList() const
 void dlinkedlist::List::makenull()
 {
     _head = deleteList(_head, _tail);
-}
-
-//Удалить элемент в позиции p
-dlinkedlist::node * dlinkedlist::List::delete_with_change(node * list, t_position pos)
-{
-    node * temp = pos -> prev;
-    temp -> next = pos -> next;//Записываем в следкющий элемент, элемент, после удаляемого
-    pos -> next -> prev = temp; //Присваиваем указателю на предыдущий элемент следующего текушую позицию
-    delete pos;//Удаляем элемент в позиции pos
-    return list;//Возвращаем список
 }
 
 //Поиск одинакового элемента в списке
@@ -730,7 +720,7 @@ cursorlist::t_position cursorlist::List::locate(const elem &x) const
 }
 
 //Вернуть элемент по позиции в списке
-elem cursorlist::List::retrieve(t_position p) const
+elem& cursorlist::List::retrieve(t_position p) const
 {
     if(p != _lpos)
     {
@@ -751,11 +741,11 @@ cursorlist::t_position cursorlist::List::deleteEl(t_position p)
     } else
     {
         int prev = get_prev_el(p); //Записываем позицию предыдущего элемента
-        List::_arr[prev].next = List::_arr[p].next; //Прошлый элемент, теперь указывает в переменной next на элемент через один
         if(prev == ERR)
         {
             return p;
         }
+        List::_arr[prev].next = List::_arr[p].next; //Прошлый элемент, теперь указывает в переменной next на элемент через один
     }
     int next = List::_arr[p].next; //Записываем позицию следуюзего элемента, чтобы вернуть нужную позицию по условии функции
     List::_arr[p].next = List::_space; //Позиция следующего элемента теперь указывает на первый из списка пустых
@@ -774,23 +764,6 @@ void cursorlist::List::makenull()
         List::_arr[prev].next = temp;
         _lpos = ENDL;
     }
-}
-
-//Удалить элемент в позиции p со смещением
-cursorlist::t_position cursorlist::List::delete_with_change(t_position p)
-{
-    int next = List::_arr[p].next; //Записываем позицию следуюзего элемента, чтобы вернуть нужную позицию по условии функции
-    if(_lpos == p) //Если позиция равна началу списка
-    {
-        _lpos = List::_arr[p].next; //Обновляем позицию первого элемента
-    } else
-    {
-        int prev = get_prev_el(p); //Записываем позицию предыдущего элемента
-        List::_arr[prev].next = List::_arr[p].next; //Прошлый элемент, теперь указывает в переменной next на элемент через один
-    }
-    List::_arr[p].next = List::_space; //Позиция следующего элемента теперь указывает на первый из списка пустых
-    List::_space = p;//Первый элемент в списке пустых, теперь равен позиции
-    return next; // Возвращаем позицию следующего элемента, после удаляемого
 }
 
 // Поиск элемента в списке
